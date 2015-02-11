@@ -72,7 +72,7 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     }
 
     @JsonIgnore
-    <U extends RecurlyObjects> U getNext(final Class<U> clazz) {
+    public <U extends RecurlyObjects> U getNext(final Class<U> clazz) {
         if (recurlyClient == null || nextUrl == null) {
             return null;
         }
