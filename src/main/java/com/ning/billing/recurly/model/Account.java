@@ -24,6 +24,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.serialization.CsvIgnore;
+import com.fivetran.donkey.serialization.CsvUnwrapped;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "account")
@@ -54,6 +57,7 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @PrimaryKey
     @XmlElement(name = "account_code")
     private String accountCode;
 
@@ -87,6 +91,10 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
+    //vat_number ???
+    //tax_exempt ???
+    //vat_location_valid ???
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -101,6 +109,7 @@ public class Account extends RecurlyObject {
         }
     }
 
+    @CsvUnwrapped
     public Address getAddress() {
         return address;
     }
@@ -109,6 +118,7 @@ public class Account extends RecurlyObject {
         this.address = address;
     }
 
+    @CsvIgnore
     public Adjustments getAdjustments() {
         return adjustments;
     }
@@ -117,6 +127,7 @@ public class Account extends RecurlyObject {
         this.adjustments = adjustments;
     }
 
+    @CsvIgnore
     public Invoices getInvoices() {
         return invoices;
     }
@@ -125,6 +136,7 @@ public class Account extends RecurlyObject {
         this.invoices = invoices;
     }
 
+    @CsvIgnore
     public Subscriptions getSubscriptions() {
         return subscriptions;
     }
@@ -133,6 +145,7 @@ public class Account extends RecurlyObject {
         this.subscriptions = subscriptions;
     }
 
+    @CsvIgnore
     public Transactions getTransactions() {
         return transactions;
     }
@@ -221,6 +234,7 @@ public class Account extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    @CsvIgnore
     public BillingInfo getBillingInfo() {
         return billingInfo;
     }
