@@ -20,6 +20,9 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fivetran.donkey.ForeignKey;
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.serialization.CsvIgnore;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "subscription")
@@ -86,6 +89,7 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "first_renewal_date")
     private DateTime firstRenewalDate;
 
+    @CsvIgnore
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -93,10 +97,16 @@ public class Subscription extends AbstractSubscription {
         return account;
     }
 
+    @ForeignKey(table = "_accounts")
+    public String getAccountId() {
+        return account.getAccountCode();
+    }
+
     public void setAccount(final Account account) {
         this.account = account;
     }
 
+    @CsvIgnore
     public Invoice getInvoice() {
         if (invoice != null && invoice.getHref() != null && !invoice.getHref().isEmpty()) {
             invoice = fetch(invoice, Invoice.class);
@@ -104,14 +114,21 @@ public class Subscription extends AbstractSubscription {
         return invoice;
     }
 
+    @CsvIgnore
     public Plan getPlan() {
         return plan;
+    }
+
+    @ForeignKey(table = "_plans")
+    public String getPlanId() {
+        return plan.getPlanCode();
     }
 
     public void setPlan(final Plan plan) {
         this.plan = plan;
     }
 
+    @PrimaryKey
     public String getUuid() {
         return uuid;
     }
@@ -192,6 +209,7 @@ public class Subscription extends AbstractSubscription {
         this.trialEndsAt = dateTimeOrNull(trialEndsAt);
     }
 
+    @CsvIgnore
     public Subscription getPendingSubscription() {
         return pendingSubscription;
     }

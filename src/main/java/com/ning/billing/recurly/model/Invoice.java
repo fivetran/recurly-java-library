@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fivetran.donkey.ForeignKey;
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.serialization.CsvIgnore;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "invoice")
@@ -72,11 +75,17 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @CsvIgnore
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
         }
         return account;
+    }
+
+    @ForeignKey(table = "_accounts")
+    public String getAccountId() {
+        return account.getAccountCode();
     }
 
     public void setAccount(final Account account) {
@@ -99,6 +108,7 @@ public class Invoice extends RecurlyObject {
         this.state = stringOrNull(state);
     }
 
+    @PrimaryKey
     public Integer getInvoiceNumber() {
         return invoiceNumber;
     }
@@ -179,6 +189,7 @@ public class Invoice extends RecurlyObject {
         this.netTerms = integerOrNull(netTerms);
     }
 
+    @CsvIgnore
     public Adjustments getLineItems() {
         return lineItems;
     }
@@ -187,6 +198,7 @@ public class Invoice extends RecurlyObject {
         this.lineItems = lineItems;
     }
 
+    @CsvIgnore
     public Transactions getTransactions() {
         return transactions;
     }

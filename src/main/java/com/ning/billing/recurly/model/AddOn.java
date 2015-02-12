@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fivetran.donkey.serialization.CsvUnwrapped;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "add_on")
@@ -43,6 +44,8 @@ public class AddOn extends AbstractAddOn {
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    //Todo: get Plan Code
 
     public String getName() {
         return name;
@@ -68,6 +71,7 @@ public class AddOn extends AbstractAddOn {
         this.defaultQuantity = integerOrNull(defaultQuantity);
     }
 
+    @CsvUnwrapped(prefix = "unit_amount_in_cents")
     public RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
     }

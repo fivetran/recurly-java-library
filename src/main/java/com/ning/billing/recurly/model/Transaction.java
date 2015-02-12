@@ -19,6 +19,9 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fivetran.donkey.ForeignKey;
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.serialization.CsvIgnore;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "transaction")
@@ -57,6 +60,7 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "details")
     private TransactionDetails details;
 
+    @CsvIgnore
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -64,15 +68,25 @@ public class Transaction extends AbstractTransaction {
         return account;
     }
 
+    public String getAccountId() {
+        return account.getAccountCode();
+    }
+
     public void setAccount(final Account account) {
         this.account = account;
     }
 
+    @CsvIgnore
     public Invoice getInvoice() {
         if (invoice != null && invoice.getCreatedAt() == null) {
             invoice = fetch(invoice, Invoice.class);
         }
         return invoice;
+    }
+
+    @ForeignKey(table = "_invoices")
+    public Integer getInvoiceId() {
+        return invoice != null ? invoice.getInvoiceNumber() : null;
     }
 
     public void setInvoice(final Invoice invoice) {
@@ -87,6 +101,7 @@ public class Transaction extends AbstractTransaction {
         this.subscription = stringOrNull(subscription);
     }
 
+    @PrimaryKey
     public String getUuid() {
         return uuid;
     }
@@ -143,6 +158,7 @@ public class Transaction extends AbstractTransaction {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    @CsvIgnore
     public TransactionDetails getDetails() {
         return details;
     }

@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.serialization.CsvIgnore;
+import com.fivetran.donkey.serialization.CsvUnwrapped;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "plan")
@@ -88,6 +91,7 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "setup_fee_in_cents")
     private RecurlyUnitCurrency setupFeeInCents;
 
+    @PrimaryKey
     public String getPlanCode() {
         return planCode;
     }
@@ -112,6 +116,7 @@ public class Plan extends RecurlyObject {
         this.description = stringOrNull(description);
     }
 
+    @CsvIgnore
     public String getSuccessLink() {
         return successLink;
     }
@@ -120,6 +125,7 @@ public class Plan extends RecurlyObject {
         this.successLink = stringOrNull(link);
     }
 
+    @CsvIgnore
     public String getCancelLink() {
         return cancelLink;
     }
@@ -216,6 +222,7 @@ public class Plan extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    @CsvUnwrapped(prefix = "unit_amount_in_cents_")
     public RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
     }
@@ -224,6 +231,7 @@ public class Plan extends RecurlyObject {
         this.unitAmountInCents = RecurlyUnitCurrency.build(unitAmountInCents);
     }
 
+    @CsvUnwrapped(prefix = "setup_fee_in_cents_")
     public RecurlyUnitCurrency getSetupFeeInCents() {
         return setupFeeInCents;
     }
@@ -232,6 +240,7 @@ public class Plan extends RecurlyObject {
         this.setupFeeInCents = RecurlyUnitCurrency.build(setupFeeInCents);
     }
 
+    @CsvIgnore
     public AddOns getAddOns() {
         return this.addOns;
     }

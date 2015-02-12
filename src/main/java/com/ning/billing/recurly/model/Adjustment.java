@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fivetran.donkey.serialization.CsvIgnore;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "adjustment")
@@ -69,11 +70,16 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @CsvIgnore
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
         }
         return account;
+    }
+
+    public String getAccountId() {
+        return account.getAccountCode();
     }
 
     public void setAccount(final Account account) {

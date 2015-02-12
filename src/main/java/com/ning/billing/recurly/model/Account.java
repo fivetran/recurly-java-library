@@ -218,6 +218,7 @@ public class Account extends RecurlyObject {
         this.acceptLanguage = stringOrNull(acceptLanguage);
     }
 
+    @CsvIgnore
     public String getHostedLoginToken() {
         return hostedLoginToken;
     }

@@ -16,6 +16,8 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fivetran.donkey.serialization.CsvUnwrapped;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -102,6 +104,7 @@ public class AbstractTransaction extends RecurlyObject {
         this.refundable = booleanOrNull(refundable);
     }
 
+    @CsvUnwrapped(prefix = "error_")
     public TransactionError getTransactionError() {
         return transactionError;
     }

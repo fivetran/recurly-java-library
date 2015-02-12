@@ -16,6 +16,8 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fivetran.donkey.serialization.CsvIgnore;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -62,6 +64,7 @@ public class AbstractSubscription extends RecurlyObject {
         this.quantity = integerOrNull(quantity);
     }
 
+    @CsvIgnore
     public SubscriptionAddOns getAddOns() {
         return addOns;
     }

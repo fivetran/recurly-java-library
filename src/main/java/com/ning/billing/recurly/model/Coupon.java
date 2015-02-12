@@ -21,6 +21,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.serialization.CsvUnwrapped;
 import org.joda.time.DateTime;
 
 /**
@@ -117,6 +119,7 @@ public class Coupon extends RecurlyObject {
      *
      * @return The coupon code for the {@link Coupon}
      */
+    @PrimaryKey
     public String getCouponCode() {
         return couponCode;
     }
@@ -193,6 +196,7 @@ public class Coupon extends RecurlyObject {
         this.singleUse = booleanOrNull(singleUse);
     }
 
+    @CsvUnwrapped(prefix = "discount_in_cents_")
     public RecurlyUnitCurrency getDiscountInCents() {
         return discountInCents;
     }
