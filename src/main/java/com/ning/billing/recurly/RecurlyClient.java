@@ -698,18 +698,6 @@ public class RecurlyClient {
                 addOnCode);
     }
 
-    ///////////////////////////////////////////////////////////////
-    // All AddOns
-
-    /**
-     * Get all add-ons
-     *
-     * @return the {@link AddOn} object as identified by the passed in plan and add-on IDs
-     */
-    public AddOns getAddOns() {
-        return doGET(AddOn.ADDONS_RESOURCE, AddOns.class);
-    }
-
     ///////////////////////////////////////////////////////////////////////////
 
     /**

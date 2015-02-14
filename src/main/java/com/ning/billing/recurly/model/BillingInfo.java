@@ -16,6 +16,8 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fivetran.donkey.serialization.CsvIgnore;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -100,6 +102,7 @@ public class BillingInfo extends RecurlyObject {
      *
      * @return account object
      */
+    @CsvIgnore
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);

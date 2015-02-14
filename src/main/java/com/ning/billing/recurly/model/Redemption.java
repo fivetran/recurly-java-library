@@ -16,6 +16,7 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fivetran.donkey.serialization.CsvIgnore;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -59,10 +60,12 @@ public class Redemption extends RecurlyObject {
         return accountCode;
     }
 
+    @CsvIgnore // Unnecessary to include this because Redemption will be part both Account and Invoice tables
     public void setAccountCode(final Object accountCode) {
         this.accountCode = stringOrNull(accountCode);
     }
 
+    @CsvIgnore
     public Coupon getCoupon() {
         if (coupon != null && coupon.getCouponCode() == null) {
             coupon = fetch(coupon, Coupon.class);
@@ -70,10 +73,19 @@ public class Redemption extends RecurlyObject {
         return coupon;
     }
 
+    public String getCouponId() {
+        if (coupon != null) {
+            return coupon.getCouponCode();
+        } else {
+            return null;
+        }
+    }
+
     public void setCoupon(final Coupon coupon) {
         this.coupon = coupon;
     }
 
+    @CsvIgnore
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);

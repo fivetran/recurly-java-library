@@ -196,6 +196,7 @@ public class Coupon extends RecurlyObject {
         this.singleUse = booleanOrNull(singleUse);
     }
 
+    //todo: Think of a better format for the currency, right now it gives a sub-field per currency, and they are all nulls except the active currencies
     @CsvUnwrapped(prefix = "discount_in_cents_")
     public RecurlyUnitCurrency getDiscountInCents() {
         return discountInCents;

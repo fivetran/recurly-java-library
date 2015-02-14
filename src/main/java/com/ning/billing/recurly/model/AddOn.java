@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fivetran.donkey.PrimaryKey;
 import com.fivetran.donkey.serialization.CsvUnwrapped;
 import org.joda.time.DateTime;
 
@@ -47,6 +48,7 @@ public class AddOn extends AbstractAddOn {
 
     //Todo: get Plan Code
 
+    @PrimaryKey
     public String getName() {
         return name;
     }

@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fivetran.donkey.serialization.CsvIgnore;
 import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.RecurlyClient;
@@ -63,6 +64,16 @@ public abstract class RecurlyObject {
 
     public void setHref(final Object href) {
         this.href = stringOrNull(href);
+    }
+
+    @CsvIgnore
+    public String getId() {
+        if (href == null) {
+            return null;
+        } else {
+            String[] parts = href.split("/");
+            return parts.length > 0 ? parts[parts.length-1] : null;
+        }
     }
 
     public static XmlMapper newXmlMapper() {

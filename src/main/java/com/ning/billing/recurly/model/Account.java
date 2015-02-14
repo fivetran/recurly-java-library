@@ -91,9 +91,7 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
-    //vat_number ???
-    //tax_exempt ???
-    //vat_location_valid ???
+    private Redemption redemption;
 
     @Override
     public void setHref(final Object href) {
@@ -109,7 +107,7 @@ public class Account extends RecurlyObject {
         }
     }
 
-    @CsvUnwrapped
+    @CsvUnwrapped(prefix = "address_")
     public Address getAddress() {
         return address;
     }
@@ -235,7 +233,7 @@ public class Account extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
-    @CsvIgnore
+    @CsvUnwrapped(prefix = "billing_")
     public BillingInfo getBillingInfo() {
         return billingInfo;
     }
@@ -243,6 +241,15 @@ public class Account extends RecurlyObject {
     public void setBillingInfo(final BillingInfo billingInfo) {
         this.billingInfo = billingInfo;
     }
+
+    //todo: fix this
+    //@CsvUnwrapped(prefix = "redemption_")
+    @CsvIgnore
+    public Redemption getRedemption() {
+        return redemption;
+    }
+
+    public void setRedemption(final Redemption redemption) {this.redemption = redemption;}
 
     @Override
     public String toString() {
