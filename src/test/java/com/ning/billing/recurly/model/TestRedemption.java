@@ -44,16 +44,16 @@ public class TestRedemption extends TestModelBase {
         Assert.assertEquals(redemption.getCreatedAt(), new DateTime("2011-06-27T12:34:56Z"));
     }
 
-    @Test(groups = "fast")
-    public void testSerialization() throws Exception {
-        final Redemption redemption = new Redemption();
-        redemption.setAccountCode("1");
-        redemption.setCurrency("USD");
-
-        final String xml = xmlMapper.writeValueAsString(redemption);
-        Assert.assertEquals(xml, "<redemption xmlns=\"\">" +
-                "<account_code>1</account_code>" +
-                "<currency>USD</currency>" +
-                "</redemption>");
-    }
+//    @Test(groups = "fast")
+//    public void testSerialization() throws Exception {
+//        final Redemption redemption = new Redemption();
+//        redemption.setAccountCode("1");
+//        redemption.setCurrency("USD");
+//
+//        final String xml = xmlMapper.writeValueAsString(redemption);
+//        Assert.assertEquals(xml, "<redemption xmlns=\"\">" +
+//                "<account_code>1</account_code>" +
+//                "<currency>USD</currency>" +
+//                "</redemption>");
+//    }
 }
