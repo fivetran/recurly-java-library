@@ -16,6 +16,22 @@
 
 package com.ning.billing.recurly;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Objects;
+import com.google.common.base.StandardSystemProperty;
+import com.google.common.io.CharSource;
+import com.google.common.io.Resources;
+import com.google.common.net.HttpHeaders;
+import com.ning.billing.recurly.model.*;
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.AsyncHttpClientConfig;
+import com.ning.http.client.Response;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+
+import javax.annotation.Nullable;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -29,29 +45,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
-import javax.xml.bind.DatatypeConverter;
-
-import com.ning.billing.recurly.model.*;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.Response;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Objects;
-import com.google.common.base.StandardSystemProperty;
-import com.google.common.io.CharSource;
-import com.google.common.io.Resources;
-import com.google.common.net.HttpHeaders;
-
 public class RecurlyClient {
 
-    private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
+    private static final Logger log = Logger.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
@@ -840,7 +836,7 @@ public class RecurlyClient {
 
     public <T> T doGETWithFullURL(final Class<T> clazz, final String url) {
         if (debug()) {
-            log.info("Msg to Recurly API [GET] :: URL : {}", url);
+            log.info("Msg to Recurly API [GET] :: URL : {} " + url);
         }
         return callRecurlySafe(client.prepareGet(url), clazz);
     }
@@ -850,11 +846,11 @@ public class RecurlyClient {
         try {
             xmlPayload = xmlMapper.writeValueAsString(payload);
             if (debug()) {
-                log.info("Msg to Recurly API [POST]:: URL : {}", baseUrl + resource);
-                log.info("Payload for [POST]:: {}", xmlPayload);
+                log.info("Msg to Recurly API [POST]:: URL : {} " + baseUrl + resource);
+                log.info("Payload for [POST]:: {} " + xmlPayload);
             }
         } catch (IOException e) {
-            log.warn("Unable to serialize {} object as XML: {}", clazz.getName(), payload.toString());
+            log.warn("Unable to serialize {} object as XML: {} " + clazz.getName() + " " + payload.toString());
             return null;
         }
 
@@ -871,11 +867,11 @@ public class RecurlyClient {
             }
 
             if (debug()) {
-                log.info("Msg to Recurly API [PUT]:: URL : {}", baseUrl + resource);
-                log.info("Payload for [PUT]:: {}", xmlPayload);
+                log.info("Msg to Recurly API [PUT]:: URL : {} " + baseUrl + resource);
+                log.info("Payload for [PUT]:: {} " + xmlPayload);
             }
         } catch (IOException e) {
-            log.warn("Unable to serialize {} object as XML: {}", clazz.getName(), payload.toString());
+            log.warn("Unable to serialize {} object as XML: {} " + clazz.getName() + " " + payload.toString());
             return null;
         }
 
@@ -925,12 +921,12 @@ public class RecurlyClient {
         try {
             final String payload = convertStreamToString(in);
             if (debug()) {
-                log.info("Msg from Recurly API :: {}", payload);
+                log.info("Msg from Recurly API :: {} " + payload);
             }
 
             // Handle errors payload
             if (response.getStatusCode() >= 300) {
-                log.warn("Recurly error whilst calling: {}\n{}", response.getUri(), payload);
+                log.warn("Recurly error whilst calling: {}\n{} " + response.getUri() + " " + payload);
 
                 if (response.getStatusCode() == 422) {
                     final Errors errors;
@@ -1004,7 +1000,7 @@ public class RecurlyClient {
             try {
                 in.close();
             } catch (IOException e) {
-                log.warn("Failed to close http-client - provided InputStream: {}", e.getLocalizedMessage());
+                log.warn("Failed to close http-client - provided InputStream: {} " + e.getLocalizedMessage());
             }
         }
     }

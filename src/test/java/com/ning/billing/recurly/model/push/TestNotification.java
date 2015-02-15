@@ -16,12 +16,7 @@
 
 package com.ning.billing.recurly.model.push;
 
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
+import com.google.common.base.CaseFormat;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.TestModelBase;
@@ -29,27 +24,17 @@ import com.ning.billing.recurly.model.push.account.AccountNotification;
 import com.ning.billing.recurly.model.push.account.BillingInfoUpdatedNotification;
 import com.ning.billing.recurly.model.push.account.CanceledAccountNotification;
 import com.ning.billing.recurly.model.push.account.NewAccountNotification;
-import com.ning.billing.recurly.model.push.payment.FailedPaymentNotification;
-import com.ning.billing.recurly.model.push.payment.PaymentNotification;
-import com.ning.billing.recurly.model.push.payment.PushTransaction;
-import com.ning.billing.recurly.model.push.payment.SuccessfulPaymentNotification;
-import com.ning.billing.recurly.model.push.payment.SuccessfulRefundNotification;
-import com.ning.billing.recurly.model.push.payment.VoidedPaymentNotification;
-import com.ning.billing.recurly.model.push.subscription.CanceledSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.ExpiredSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.NewSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.PushSubscription;
-import com.ning.billing.recurly.model.push.subscription.ReactivatedAccountNotification;
-import com.ning.billing.recurly.model.push.subscription.RenewedSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.SubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.UpdatedSubscriptionNotification;
-
-import com.google.common.base.CaseFormat;
+import com.ning.billing.recurly.model.push.payment.*;
+import com.ning.billing.recurly.model.push.subscription.*;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 // See http://docs.recurly.com/api/push-notifications
 public class TestNotification extends TestModelBase {
 
-    private static final Logger log = LoggerFactory.getLogger(TestNotification.class);
+    private static final Logger log = Logger.getLogger(TestNotification.class);
 
     private static final String ACCOUNTDATA = "<account>\n" +
                                               "  <account_code>1</account_code>\n" +
@@ -125,7 +110,7 @@ public class TestNotification extends TestModelBase {
 
         notificationDataBuilder.append("</").append(xmlElement).append(">");
         final String notificationData = notificationDataBuilder.toString();
-        log.debug("Test deserialization of \n{}", notificationData);
+        log.debug("Test deserialization of \n{} " + notificationData);
 
         final Notification.Type detected = Notification.detect(notificationData);
         Assert.assertEquals(detected.getJavaType(), clazz);
@@ -142,7 +127,7 @@ public class TestNotification extends TestModelBase {
         if (isPayment) {
             testPaymentNotification((PaymentNotification) notification);
         }
-        log.info("{} deserialized", clazz.getSimpleName());
+        log.info("{} deserialized " + clazz.getSimpleName());
     }
 
     private void testAccountNotification(final AccountNotification accountNotification) {

@@ -16,20 +16,17 @@
 
 package com.ning.billing.recurly.model.push;
 
+import com.google.common.base.CaseFormat;
+import com.ning.billing.recurly.model.RecurlyObject;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ning.billing.recurly.model.RecurlyObject;
-
-import com.google.common.base.CaseFormat;
-
 public abstract class Notification extends RecurlyObject {
 
-    private static Logger log = LoggerFactory.getLogger(Notification.class);
+    private static Logger log = Logger.getLogger(Notification.class);
     private static Pattern ROOT_NAME = Pattern.compile("<(.*_notification)>");
 
     public static enum Type {
@@ -67,7 +64,7 @@ public abstract class Notification extends RecurlyObject {
             // TODO Should we cache the mapper?
             return RecurlyObject.newXmlMapper().readValue(payload, clazz);
         } catch (IOException e) {
-            log.warn("Enable to read notification, de-serialization failed : {}", e.getMessage());
+            log.warn("Enable to read notification, de-serialization failed : {} " + e.getMessage());
             return null;
         }
     }
@@ -86,7 +83,7 @@ public abstract class Notification extends RecurlyObject {
             try {
                 return Type.valueOf(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, root));
             } catch (IllegalArgumentException e) {
-                log.warn("Enable to detect notification type, no type for {}", root);
+                log.warn("Enable to detect notification type, no type for {} " + root);
                 return null;
             }
         }
