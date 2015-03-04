@@ -65,6 +65,17 @@ public class RecurlyAPIError extends RecurlyObject {
         return sb.toString();
     }
 
+    public String getMessage() {
+        if (details != null)
+            return details;
+        else if (description != null)
+            return description;
+        else if (symbol != null)
+            return symbol;
+        else
+            return "Unspecified error";
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

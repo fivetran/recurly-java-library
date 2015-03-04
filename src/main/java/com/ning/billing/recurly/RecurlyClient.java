@@ -946,7 +946,11 @@ public class RecurlyClient {
                     } catch (Exception e) {
                         log.debug("Unable to extract error", e);
                     }
-                    throw new RecurlyAPIException(recurlyError);
+
+                    if (recurlyError != null)
+                        throw new RecurlyAPIException(recurlyError);
+                    else
+                        throw new RecurlyAPIException(response.getStatusText());
                 }
             }
 
