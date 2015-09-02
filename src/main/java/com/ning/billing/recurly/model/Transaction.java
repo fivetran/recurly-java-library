@@ -69,7 +69,7 @@ public class Transaction extends AbstractTransaction {
     }
 
     public String getAccountId() {
-        return account.getAccountCode();
+        return account != null ? account.getAccountCode() : null;
     }
 
     public void setAccount(final Account account) {
