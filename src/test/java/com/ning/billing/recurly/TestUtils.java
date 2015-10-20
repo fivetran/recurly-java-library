@@ -16,21 +16,10 @@
 
 package com.ning.billing.recurly;
 
-import java.util.UUID;
-
+import com.ning.billing.recurly.model.*;
 import org.joda.time.DateTime;
 
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.AddOn;
-import com.ning.billing.recurly.model.Address;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Coupon;
-import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.RecurlyUnitCurrency;
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.SubscriptionAddOn;
-import com.ning.billing.recurly.model.SubscriptionAddOns;
-import com.ning.billing.recurly.model.Transaction;
+import java.util.UUID;
 
 public class TestUtils {
 
@@ -100,7 +89,7 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link com.ning.billing.recurly.model.Account} object for testing use.
+     * Creates a random {@link com.ning.billing.recurly.model.Account} object for TESTING use.
      *
      * @return The random {@link com.ning.billing.recurly.model.Account} object
      */
@@ -127,7 +116,7 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use.
+     * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for TESTING use.
      *
      * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
      */
@@ -155,7 +144,7 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link com.ning.billing.recurly.model.Plan} object for testing use.
+     * Creates a random {@link com.ning.billing.recurly.model.Plan} object for TESTING use.
      *
      * @return The random {@link com.ning.billing.recurly.model.Plan} object
      */
@@ -172,7 +161,7 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link Plan} object for testing use.
+     * Creates a random {@link Plan} object for TESTING use.
      */
     public static Plan createRandomPlan(final String currencyCode) {
         final Plan plan = createRandomPlan();
@@ -183,7 +172,7 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link RecurlyUnitCurrency} object for testing use.
+     * Creates a random {@link RecurlyUnitCurrency} object for TESTING use.
      *
      * @return The random {@link RecurlyUnitCurrency} object
      */
@@ -201,7 +190,7 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link RecurlyUnitCurrency} object for testing use. The Price
+     * Creates a random {@link RecurlyUnitCurrency} object for TESTING use. The Price
      * object
      *
      * @param currencyCode The currency for which we should return a random Price
