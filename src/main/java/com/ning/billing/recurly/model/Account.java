@@ -16,18 +16,19 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.fivetran.donkey.DistKey;
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.SortKey;
+import com.fivetran.donkey.serialization.CsvIgnore;
+import com.fivetran.donkey.serialization.CsvUnwrapped;
+import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import com.fivetran.donkey.PrimaryKey;
-import com.fivetran.donkey.serialization.CsvIgnore;
-import com.fivetran.donkey.serialization.CsvUnwrapped;
-import org.joda.time.DateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @XmlRootElement(name = "account")
 public class Account extends RecurlyObject {
@@ -57,6 +58,8 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @SortKey
+    @DistKey
     @PrimaryKey
     @XmlElement(name = "account_code")
     private String accountCode;

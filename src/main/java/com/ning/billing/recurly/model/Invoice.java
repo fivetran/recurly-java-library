@@ -16,14 +16,16 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fivetran.donkey.DistKey;
+import com.fivetran.donkey.ForeignKey;
+import com.fivetran.donkey.PrimaryKey;
+import com.fivetran.donkey.SortKey;
+import com.fivetran.donkey.serialization.CsvIgnore;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fivetran.donkey.ForeignKey;
-import com.fivetran.donkey.PrimaryKey;
-import com.fivetran.donkey.serialization.CsvIgnore;
-import org.joda.time.DateTime;
 
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
@@ -83,6 +85,7 @@ public class Invoice extends RecurlyObject {
         return account;
     }
 
+    @SortKey @DistKey
     @ForeignKey(table = "_accounts")
     public String getAccountId() {
         return account.getAccountCode();
