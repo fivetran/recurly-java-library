@@ -17,10 +17,7 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fivetran.donkey.DistKey;
-import com.fivetran.donkey.ForeignKey;
-import com.fivetran.donkey.PrimaryKey;
-import com.fivetran.donkey.SortKey;
+import com.fivetran.donkey.*;
 import com.fivetran.donkey.serialization.CsvIgnore;
 import org.joda.time.DateTime;
 
@@ -101,6 +98,7 @@ public class Subscription extends AbstractSubscription {
 
     @SortKey
     @DistKey
+    @ByteLength(128)
     @ForeignKey(table = "_accounts")
     public String getAccountId() {
         return account.getAccountCode();

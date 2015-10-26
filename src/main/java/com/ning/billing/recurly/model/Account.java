@@ -16,6 +16,7 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fivetran.donkey.ByteLength;
 import com.fivetran.donkey.DistKey;
 import com.fivetran.donkey.PrimaryKey;
 import com.fivetran.donkey.SortKey;
@@ -61,6 +62,7 @@ public class Account extends RecurlyObject {
     @SortKey
     @DistKey
     @PrimaryKey
+    @ByteLength(128)
     @XmlElement(name = "account_code")
     private String accountCode;
 
