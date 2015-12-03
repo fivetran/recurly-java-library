@@ -27,7 +27,8 @@ import com.ning.billing.recurly.model.*;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import javax.annotation.Nullable;
@@ -47,7 +48,7 @@ import java.util.regex.Pattern;
 
 public class RecurlyClient {
 
-    private static final Logger log = Logger.getLogger(RecurlyClient.class);
+    private static final Logger log = LogManager.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";

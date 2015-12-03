@@ -18,7 +18,8 @@ package com.ning.billing.recurly;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.BaseEncoding;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -29,7 +30,7 @@ import java.util.UUID;
 
 public class RecurlyJs {
 
-    private static final Logger log = Logger.getLogger(RecurlyJs.class);
+    private static final Logger log = LogManager.getLogger(RecurlyJs.class);
 
     // Specific to signature generation
     public static final String PARAMETER_FORMAT = "%s=%s";

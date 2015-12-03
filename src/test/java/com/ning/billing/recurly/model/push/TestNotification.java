@@ -26,7 +26,8 @@ import com.ning.billing.recurly.model.push.account.CanceledAccountNotification;
 import com.ning.billing.recurly.model.push.account.NewAccountNotification;
 import com.ning.billing.recurly.model.push.payment.*;
 import com.ning.billing.recurly.model.push.subscription.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -34,7 +35,7 @@ import org.testng.annotations.Test;
 // See http://docs.recurly.com/api/push-notifications
 public class TestNotification extends TestModelBase {
 
-    private static final Logger log = Logger.getLogger(TestNotification.class);
+    private static final Logger log = LogManager.getLogger(TestNotification.class);
 
     private static final String ACCOUNTDATA = "<account>\n" +
                                               "  <account_code>1</account_code>\n" +
