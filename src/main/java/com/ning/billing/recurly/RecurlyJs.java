@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 public class RecurlyJs {
 
-    private static final Logger log = Logger.getLogger(RecurlyJs.class.getName());
+    private static final Logger log = Logger.getLogger("donkey");
 
     // Specific to signature generation
     public static final String PARAMETER_FORMAT = "%s=%s";

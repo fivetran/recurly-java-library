@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
 
 public class RecurlyClient {
 
-    private static final Logger log = Logger.getLogger(RecurlyClient.class.getName());
+    private static final Logger log = Logger.getLogger("donkey");
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";

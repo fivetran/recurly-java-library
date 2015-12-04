@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 // See http://docs.recurly.com/api/push-notifications
 public class TestNotification extends TestModelBase {
 
-    private static final Logger log = Logger.getLogger(TestNotification.class.getName());
+    private static final Logger log = Logger.getLogger("donkey");
 
     private static final String ACCOUNTDATA = "<account>\n" +
                                               "  <account_code>1</account_code>\n" +

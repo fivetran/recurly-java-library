@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 public abstract class Notification extends RecurlyObject {
 
-    private static Logger log = Logger.getLogger(Notification.class.getName());
+    private static Logger log = Logger.getLogger("donkey");
     private static Pattern ROOT_NAME = Pattern.compile("<(.*_notification)>");
 
     public static enum Type {
