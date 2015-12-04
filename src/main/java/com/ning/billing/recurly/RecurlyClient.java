@@ -27,8 +27,6 @@ import com.ning.billing.recurly.model.*;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import javax.annotation.Nullable;
@@ -43,12 +41,14 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RecurlyClient {
 
-    private static final Logger log = LogManager.getLogger(RecurlyClient.class);
+    private static final Logger log = Logger.getLogger(RecurlyClient.class.getName());
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
@@ -851,7 +851,7 @@ public class RecurlyClient {
                 log.info("Payload for [POST]:: {} " + xmlPayload);
             }
         } catch (IOException e) {
-            log.warn("Unable to serialize {} object as XML: {} " + clazz.getName() + " " + payload.toString());
+            log.warning("Unable to serialize {} object as XML: {} " + clazz.getName() + " " + payload.toString());
             return null;
         }
 
@@ -872,7 +872,7 @@ public class RecurlyClient {
                 log.info("Payload for [PUT]:: {} " + xmlPayload);
             }
         } catch (IOException e) {
-            log.warn("Unable to serialize {} object as XML: {} " + clazz.getName() + " " + payload.toString());
+            log.warning("Unable to serialize {} object as XML: {} " + clazz.getName() + " " + payload.toString());
             return null;
         }
 
@@ -887,7 +887,7 @@ public class RecurlyClient {
         try {
             return callRecurly(builder, clazz);
         } catch (IOException e) {
-            log.warn("Error while calling Recurly", e);
+            log.log(Level.WARNING, "Error while calling Recurly", e);
             return null;
         } catch (ExecutionException e) {
             // Extract the errors exception, if any
@@ -900,10 +900,10 @@ public class RecurlyClient {
                 // See https://github.com/killbilling/recurly-java-library/issues/16
                 throw (TransactionErrorException) e.getCause();
             }
-            log.error("Execution error", e);
+            log.log(Level.SEVERE, "Execution error", e);
             return null;
         } catch (InterruptedException e) {
-            log.error("Interrupted while calling Recurly", e);
+            log.log(Level.SEVERE, "Interrupted while calling Recurly", e);
             return null;
         }
     }
@@ -927,7 +927,7 @@ public class RecurlyClient {
 
             // Handle errors payload
             if (response.getStatusCode() >= 300) {
-                log.warn("Recurly error whilst calling: {}\n{} " + response.getUri() + " " + payload);
+                log.warning("Recurly error whilst calling: {}\n{} " + response.getUri() + " " + payload);
 
                 if (response.getStatusCode() == 422) {
                     final Errors errors;
@@ -936,7 +936,7 @@ public class RecurlyClient {
                     } catch (Exception e) {
                         // 422 is returned for transaction errors (see http://docs.recurly.com/api/transactions/error-codes)
                         // as well as bad input payloads
-                        log.debug("Unable to extract error", e);
+                        log.log(Level.FINE, "Unable to extract error", e);
                         return null;
                     }
                     throw new TransactionErrorException(errors);
@@ -945,7 +945,7 @@ public class RecurlyClient {
                     try {
                         recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
                     } catch (Exception e) {
-                        log.debug("Unable to extract error", e);
+                        log.log(Level.FINE, "Unable to extract error", e);
                     }
 
                     if (recurlyError != null)
@@ -1005,7 +1005,7 @@ public class RecurlyClient {
             try {
                 in.close();
             } catch (IOException e) {
-                log.warn("Failed to close http-client - provided InputStream: {} " + e.getLocalizedMessage());
+                log.warning("Failed to close http-client - provided InputStream: {} " + e.getLocalizedMessage());
             }
         }
     }

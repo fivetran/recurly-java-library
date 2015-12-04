@@ -18,8 +18,6 @@ package com.ning.billing.recurly;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.BaseEncoding;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -27,10 +25,12 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RecurlyJs {
 
-    private static final Logger log = LogManager.getLogger(RecurlyJs.class);
+    private static final Logger log = Logger.getLogger(RecurlyJs.class.getName());
 
     // Specific to signature generation
     public static final String PARAMETER_FORMAT = "%s=%s";
@@ -106,7 +106,7 @@ public class RecurlyJs {
             byte[] result = mac.doFinal(protectedParams.getBytes("UTF-8"));
             return BaseEncoding.base16().encode(result).toLowerCase();
         } catch (Exception e) {
-            log.error("Error while trying to generate Recurly HMAC signature", e);
+            log.log(Level.SEVERE, "Error while trying to generate Recurly HMAC signature", e);
             return null;
         }
     }

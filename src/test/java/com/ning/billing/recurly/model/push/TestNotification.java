@@ -26,16 +26,16 @@ import com.ning.billing.recurly.model.push.account.CanceledAccountNotification;
 import com.ning.billing.recurly.model.push.account.NewAccountNotification;
 import com.ning.billing.recurly.model.push.payment.*;
 import com.ning.billing.recurly.model.push.subscription.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.logging.Logger;
+
 // See http://docs.recurly.com/api/push-notifications
 public class TestNotification extends TestModelBase {
 
-    private static final Logger log = LogManager.getLogger(TestNotification.class);
+    private static final Logger log = Logger.getLogger(TestNotification.class.getName());
 
     private static final String ACCOUNTDATA = "<account>\n" +
                                               "  <account_code>1</account_code>\n" +
@@ -111,7 +111,7 @@ public class TestNotification extends TestModelBase {
 
         notificationDataBuilder.append("</").append(xmlElement).append(">");
         final String notificationData = notificationDataBuilder.toString();
-        log.debug("Test deserialization of \n{} " + notificationData);
+        log.fine("Test deserialization of \n{} " + notificationData);
 
         final Notification.Type detected = Notification.detect(notificationData);
         Assert.assertEquals(detected.getJavaType(), clazz);
