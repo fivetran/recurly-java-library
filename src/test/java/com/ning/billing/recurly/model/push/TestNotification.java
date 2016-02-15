@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -16,6 +17,13 @@
 
 package com.ning.billing.recurly.model.push;
 
+import com.ning.billing.recurly.model.push.invoice.*;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.google.common.base.CaseFormat;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Plan;
@@ -24,6 +32,20 @@ import com.ning.billing.recurly.model.push.account.AccountNotification;
 import com.ning.billing.recurly.model.push.account.BillingInfoUpdatedNotification;
 import com.ning.billing.recurly.model.push.account.CanceledAccountNotification;
 import com.ning.billing.recurly.model.push.account.NewAccountNotification;
+import com.ning.billing.recurly.model.push.payment.FailedPaymentNotification;
+import com.ning.billing.recurly.model.push.payment.PaymentNotification;
+import com.ning.billing.recurly.model.push.payment.PushTransaction;
+import com.ning.billing.recurly.model.push.payment.SuccessfulPaymentNotification;
+import com.ning.billing.recurly.model.push.payment.SuccessfulRefundNotification;
+import com.ning.billing.recurly.model.push.payment.VoidPaymentNotification;
+import com.ning.billing.recurly.model.push.subscription.CanceledSubscriptionNotification;
+import com.ning.billing.recurly.model.push.subscription.ExpiredSubscriptionNotification;
+import com.ning.billing.recurly.model.push.subscription.NewSubscriptionNotification;
+import com.ning.billing.recurly.model.push.subscription.PushSubscription;
+import com.ning.billing.recurly.model.push.subscription.ReactivatedAccountNotification;
+import com.ning.billing.recurly.model.push.subscription.RenewedSubscriptionNotification;
+import com.ning.billing.recurly.model.push.subscription.SubscriptionNotification;
+import com.ning.billing.recurly.model.push.subscription.UpdatedSubscriptionNotification;
 import com.ning.billing.recurly.model.push.payment.*;
 import com.ning.billing.recurly.model.push.subscription.*;
 import org.joda.time.DateTime;
@@ -32,7 +54,7 @@ import org.testng.annotations.Test;
 
 import java.util.logging.Logger;
 
-// See http://docs.recurly.com/api/push-notifications
+// See https://recurly.readme.io/v2.0/page/webhooks
 public class TestNotification extends TestModelBase {
 
     private static final Logger log = Logger.getLogger("donkey");
@@ -78,12 +100,29 @@ public class TestNotification extends TestModelBase {
                                                   "  <reference></reference>\n" +
                                                   "  <cvv_result code=\"\"></cvv_result>\n" +
                                                   "  <avs_result code=\"D\">Street address and postal code match.</avs_result>\n" +
-                                                  "  <avs_result_street nil=\"true\"></avs_result_street>\n" +
-                                                  "  <avs_result_postal nil=\"true\"></avs_result_postal>\n" +
+                                                  "  <avs_result_street>123 Main St.</avs_result_street>\n" +
+                                                  "  <avs_result_postal>20121</avs_result_postal>\n" +
+                                                  "  <source>subscription</source>\n" +
                                                   "  <test type=\"boolean\">true</test>\n" +
                                                   "  <voidable type=\"boolean\">true</voidable>\n" +
                                                   "  <refundable type=\"boolean\">true</refundable>\n" +
                                                   "</transaction>";
+
+    private static final String INVOICEDATA = "<invoice>\n" +
+                                              "  <uuid>ffc64d71d4b5404e93f13aac9c63b007</uuid>\n" +
+                                              "  <subscription_id nil=\"true\"></subscription_id>\n" +
+                                              "  <state>collected</state>\n" +
+                                              "  <invoice_number_prefix></invoice_number_prefix>\n" +
+                                              "  <invoice_number type=\"integer\">1000</invoice_number>\n" +
+                                              "  <po_number></po_number>\n" +
+                                              "  <vat_number></vat_number>\n" +
+                                              "  <total_in_cents type=\"integer\">1100</total_in_cents>\n" +
+                                              "  <currency>USD</currency>\n" +
+                                              "  <date type=\"datetime\">2014-01-01T20:20:29Z</date>\n" +
+                                              "  <closed_at type=\"datetime\">2014-01-01T20:24:02Z</closed_at>\n" +
+                                              "  <net_terms type=\"integer\">0</net_terms>\n" +
+                                              "  <collection_method>automatic</collection_method>\n" +
+                                              "</invoice>";
 
     private <T extends Notification> void deserialize(final Class<T> clazz) {
 
@@ -92,7 +131,7 @@ public class TestNotification extends TestModelBase {
                 .append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
                 .append("<").append(xmlElement).append(">\n");
 
-        boolean isAccount = false, isSubscription = false, isPayment = false;
+        boolean isAccount = false, isSubscription = false, isPayment = false, isInvoice = false;
 
         if (AccountNotification.class.isAssignableFrom(clazz)) {
             notificationDataBuilder.append(ACCOUNTDATA).append("\n");
@@ -107,6 +146,11 @@ public class TestNotification extends TestModelBase {
         if (PaymentNotification.class.isAssignableFrom(clazz)) {
             notificationDataBuilder.append(TRANSACTIONDATA).append("\n");
             isPayment = true;
+        }
+
+        if(InvoiceNotification.class.isAssignableFrom(clazz)) {
+            notificationDataBuilder.append(INVOICEDATA).append("\n");
+            isInvoice = true;
         }
 
         notificationDataBuilder.append("</").append(xmlElement).append(">");
@@ -128,7 +172,10 @@ public class TestNotification extends TestModelBase {
         if (isPayment) {
             testPaymentNotification((PaymentNotification) notification);
         }
-        log.info("{} deserialized " + clazz.getSimpleName());
+        if (isInvoice) {
+            testInvoiceNotification((InvoiceNotification) notification);
+        }
+        log.info("{} deserialized", clazz.getSimpleName());
     }
 
     private void testAccountNotification(final AccountNotification accountNotification) {
@@ -180,6 +227,9 @@ public class TestNotification extends TestModelBase {
         Assert.assertTrue(transaction.getTest());
         Assert.assertTrue(transaction.getRefundable());
         Assert.assertTrue(transaction.getVoidable());
+        Assert.assertEquals(transaction.getAvsResultStreet(), "123 Main St.");
+        Assert.assertEquals(transaction.getAvsResultPostal(), "20121");
+        Assert.assertEquals(transaction.getSource(), "subscription");
 
         final PushTransaction.VerificationResult cvv = transaction.getCvvResult();
         Assert.assertNotNull(cvv);
@@ -190,6 +240,24 @@ public class TestNotification extends TestModelBase {
         Assert.assertNotNull(avs);
         Assert.assertEquals(avs.getCode(), "D");
         Assert.assertEquals(avs.getMessage(), "Street address and postal code match.");
+    }
+
+    private void testInvoiceNotification(final InvoiceNotification invoiceNotification) {
+        PushInvoice invoice = invoiceNotification.getInvoice();
+        Assert.assertNotNull(invoice);
+        Assert.assertEquals(invoice.getUuid(), "ffc64d71d4b5404e93f13aac9c63b007");
+        Assert.assertNull(invoice.getSubscriptionId());
+        Assert.assertEquals(invoice.getState(), "collected");
+        Assert.assertNull(invoice.getInvoiceNumberPrefix());
+        Assert.assertEquals(invoice.getInvoiceNumber(), new Integer(1000));
+        Assert.assertNull(invoice.getPoNumber());
+        Assert.assertNull(invoice.getVatNumber());
+        Assert.assertEquals(invoice.getTotalInCents(), new Integer(1100));
+        Assert.assertEquals(invoice.getCurrency(), "USD");
+        Assert.assertEquals(invoice.getDate(), new DateTime("2014-01-01T20:20:29Z"));
+        Assert.assertEquals(invoice.getClosedAt(), new DateTime("2014-01-01T20:24:02Z"));
+        Assert.assertEquals(invoice.getNetTerms(), new Integer(0));
+        Assert.assertEquals(invoice.getCollectionMethod(), "automatic");
     }
 
     @Test(groups = "fast")
@@ -248,12 +316,32 @@ public class TestNotification extends TestModelBase {
     }
 
     @Test(groups = "fast")
-    public void testVoidedPaymentNotification() {
-        deserialize(VoidedPaymentNotification.class);
+    public void testVoidPaymentNotification() {
+        deserialize(VoidPaymentNotification.class);
     }
 
     @Test(groups = "fast")
     public void testSuccessfulRefundNotification() {
         deserialize(SuccessfulRefundNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testClosedInvoiceNotification() {
+        deserialize(ClosedInvoiceNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testNewInvoiceNotification() {
+        deserialize(NewInvoiceNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testPastDueInvoiceNotification() {
+        deserialize(PastDueInvoiceNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testProcessingInvoiceNotification() {
+        deserialize(ProcessingInvoiceNotification.class);
     }
 }
