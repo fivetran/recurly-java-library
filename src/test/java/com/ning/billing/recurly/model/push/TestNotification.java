@@ -17,13 +17,6 @@
 
 package com.ning.billing.recurly.model.push;
 
-import com.ning.billing.recurly.model.push.invoice.*;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import com.google.common.base.CaseFormat;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Plan;
@@ -32,20 +25,7 @@ import com.ning.billing.recurly.model.push.account.AccountNotification;
 import com.ning.billing.recurly.model.push.account.BillingInfoUpdatedNotification;
 import com.ning.billing.recurly.model.push.account.CanceledAccountNotification;
 import com.ning.billing.recurly.model.push.account.NewAccountNotification;
-import com.ning.billing.recurly.model.push.payment.FailedPaymentNotification;
-import com.ning.billing.recurly.model.push.payment.PaymentNotification;
-import com.ning.billing.recurly.model.push.payment.PushTransaction;
-import com.ning.billing.recurly.model.push.payment.SuccessfulPaymentNotification;
-import com.ning.billing.recurly.model.push.payment.SuccessfulRefundNotification;
-import com.ning.billing.recurly.model.push.payment.VoidPaymentNotification;
-import com.ning.billing.recurly.model.push.subscription.CanceledSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.ExpiredSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.NewSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.PushSubscription;
-import com.ning.billing.recurly.model.push.subscription.ReactivatedAccountNotification;
-import com.ning.billing.recurly.model.push.subscription.RenewedSubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.SubscriptionNotification;
-import com.ning.billing.recurly.model.push.subscription.UpdatedSubscriptionNotification;
+import com.ning.billing.recurly.model.push.invoice.*;
 import com.ning.billing.recurly.model.push.payment.*;
 import com.ning.billing.recurly.model.push.subscription.*;
 import org.joda.time.DateTime;
@@ -175,7 +155,7 @@ public class TestNotification extends TestModelBase {
         if (isInvoice) {
             testInvoiceNotification((InvoiceNotification) notification);
         }
-        log.info("{} deserialized", clazz.getSimpleName());
+        log.info("{} deserialized" + clazz.getSimpleName());
     }
 
     private void testAccountNotification(final AccountNotification accountNotification) {
