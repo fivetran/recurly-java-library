@@ -193,6 +193,7 @@ public class AbstractTransaction extends RecurlyObject {
         this.ipAddress = stringOrNull(ipAddress);
     }
 
+    @CsvUnwrapped(prefix = "cvv_result_")
     public VerificationResult getCvvResult() {
         return cvvResult;
     }
@@ -201,6 +202,7 @@ public class AbstractTransaction extends RecurlyObject {
         this.cvvResult = VerificationResult.as(cvvResult);
     }
 
+    @CsvUnwrapped(prefix = "avs_result_")
     public VerificationResult getAvsResult() {
         return avsResult;
     }
