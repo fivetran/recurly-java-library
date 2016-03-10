@@ -25,7 +25,7 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>SOURCE</version>
+    <version>0.4.1-1</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>http://github.com/killbilling/recurly-java-library</url>
@@ -68,11 +68,6 @@
         <guava.version>18.0</guava.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.fivetran</groupId>
-            <artifactId>common</artifactId>
-            <version>SOURCE</version>
-        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
@@ -425,6 +420,14 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
     </build>
     <profiles>
         <profile>
@@ -513,4 +516,20 @@
         <system>Github</system>
         <url>http://github.com/killbilling/recurly-java-library</url>
     </issueManagement>
+
+    <!-- You need ~/.m2/settings.xml for aws-maven to work -->
+    <distributionManagement>
+        <repository>
+            <id>fivetran-maven-release</id>
+            <url>s3://fivetran-maven/public/release</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>aws-public-release</id>
+            <name>AWS Public Release Repository</name>
+            <url>https://s3.amazonaws.com/fivetran-maven/public/release</url>
+        </repository>
+    </repositories>
 </project>
