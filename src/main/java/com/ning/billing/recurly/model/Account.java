@@ -17,12 +17,12 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fivetran.donkey.ByteLength;
-import com.fivetran.donkey.DistKey;
-import com.fivetran.donkey.PrimaryKey;
-import com.fivetran.donkey.SortKey;
-import com.fivetran.donkey.serialization.CsvIgnore;
-import com.fivetran.donkey.serialization.CsvUnwrapped;
+import com.fivetran.core.annotations.ByteLength;
+import com.fivetran.core.annotations.DistKey;
+import com.fivetran.core.annotations.PrimaryKey;
+import com.fivetran.core.annotations.SortKey;
+import com.fivetran.core.annotations.CsvIgnore;
+import com.fivetran.core.annotations.CsvUnwrapped;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;

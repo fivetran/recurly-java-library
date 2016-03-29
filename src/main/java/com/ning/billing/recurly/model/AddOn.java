@@ -21,8 +21,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fivetran.donkey.PrimaryKey;
-import com.fivetran.donkey.serialization.CsvUnwrapped;
+import com.fivetran.core.annotations.PrimaryKey;
+import com.fivetran.core.annotations.CsvUnwrapped;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "add_on")

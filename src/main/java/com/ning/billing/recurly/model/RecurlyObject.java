@@ -24,8 +24,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fivetran.donkey.serialization.CsvIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fivetran.core.annotations.CsvIgnore;
 import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.RecurlyClient;

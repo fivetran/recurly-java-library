@@ -22,9 +22,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fivetran.donkey.PrimaryKey;
-import com.fivetran.donkey.serialization.CsvIgnore;
-import com.fivetran.donkey.serialization.CsvUnwrapped;
+import com.fivetran.core.annotations.PrimaryKey;
+import com.fivetran.core.annotations.CsvIgnore;
+import com.fivetran.core.annotations.CsvUnwrapped;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "plan")

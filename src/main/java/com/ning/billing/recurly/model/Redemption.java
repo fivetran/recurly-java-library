@@ -17,7 +17,7 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fivetran.donkey.serialization.CsvIgnore;
+import com.fivetran.core.annotations.CsvIgnore;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;

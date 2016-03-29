@@ -17,8 +17,8 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fivetran.donkey.serialization.CsvIgnore;
-import com.fivetran.donkey.serialization.CsvUnwrapped;
+import com.fivetran.core.annotations.CsvIgnore;
+import com.fivetran.core.annotations.CsvUnwrapped;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
